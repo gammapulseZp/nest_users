@@ -27,11 +27,9 @@ export class CreateUserDto { //pay attention to equal interface User
 
   readonly avatar: string;
 
-  readonly role: Role[];
+  readonly role: Role.Admin | Role.User;
 
   readonly deleted: boolean;
-
-  readonly refreshToken: string;
 
 }
 

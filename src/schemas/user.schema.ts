@@ -1,17 +1,20 @@
-import { Next } from '@nestjs/common';
 import { Prop, Schema, SchemaFactory, } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Role } from 'src/enums/role.enum';
 
 export type UserDocument = User & Document;
 
 @Schema({ //shema options
-  /*pluralizes; build-in in Nest.js 
-   may create another collection in addition to pluralized 
+  /*pluralizes; build-in in Nest.js
+   may create another collection in addition to pluralized
    use discriminators to have multiple shemas on one collection*/
-  //collection : 'user' 
-  strict: 'throw', //true by default; ignores or not non-shema fields; 'throw' - throws error if non-shema fields present in body
+  //collection : 'user'
+  strict: 'throw', /*
+  true by default; ignores or not non-shema fields; 'throw' - throws error if non-shema fields present in body
+  good for debugging interactions with database
+  */
   versionKey: false, //removes __v field from response, not from DB
-}) 
+})
 
 export class User {
   @Prop(/*{ //mongoose options object
@@ -54,6 +57,9 @@ export class User {
 
   @Prop()
   refreshToken: string;
+
+  @Prop()
+  role: Role.Admin | Role.User
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

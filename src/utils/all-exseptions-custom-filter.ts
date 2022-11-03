@@ -8,5 +8,5 @@ export const catchError = (err, service) => {
   if (err?.name === 'CastError') throw new CastError(err) // to work properly shema and interface type must be same
   if(err?.name === 'ValidationError') throw new ValidationError(err, service) // for missing required fields
   if (err?.name === 'MongoServerError' && err?.code === 11000) throw new ValidationError(err, service)
-  throw new HttpException(`Unhandled exception in ${service} service. Error name: ${err.name}. Check the console`, HttpStatus.INTERNAL_SERVER_ERROR);
+  throw new HttpException(`Unhandled exception in ${service} service. Error name: ${err.name}. Error text: ${err}`, HttpStatus.INTERNAL_SERVER_ERROR);
 }

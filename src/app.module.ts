@@ -11,6 +11,7 @@ import { RolesGuard } from './guards/roles.guard';
 
 //Remove if no need
 // import { config } from 'dotenv';
+import { RefreshTokensModule } from './refresh-tokens/refresh-tokens.module';
 // config();
 
 @Module({
@@ -18,7 +19,7 @@ import { RolesGuard } from './guards/roles.guard';
     envFilePath: './config.env',
     isGlobal: true,
     //ignoreEnvFile: false
-  }), UsersModule, AuthModule],
+  }), UsersModule, AuthModule, RefreshTokensModule],
   controllers: [AppController],
   providers: [
     AppService, 

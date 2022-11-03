@@ -15,7 +15,7 @@ export class UsersController {
   @Public() //custom decorator that uses JwtAuthGuard's canActivate method under hood
   @Get()
   findAll(@Req() req) { //The @Req() decorator is imported from the @nestjs/common, while Request from the express package (??? эээ).
-    console.log('req.cookies', req.cookies)
+    //console.log('req.cookies', req.cookies)
     /* or*/ //console.log(req.cookies['refresh_token']);
     // or console.log(request.signedCookies); //if a secret was provided on top-level (app.use(cookieParser()))
     return this.usersService.findAll();
@@ -46,6 +46,11 @@ export class UsersController {
   @Patch('/activate/:id')
   activate(@Param('id') id: string) {
     return this.usersService.activate(id);
+  }
+
+  @Get('/:id/refresh-tokens')
+  findUserTokens(@Param('id') id: string) {
+    return this.usersService.findUserTokens(id)
   }
 }
 
