@@ -1,12 +1,11 @@
-import { Module } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { UsersController } from './users.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { usersProviders } from '../providers_mongoose/users.providers';
-import { DatabaseModule } from 'src/mongoose-setup/database.module';
-import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from 'src/constants';
+import { Module } from "@nestjs/common";
+import { UsersService } from "./users.service";
+import { UsersController } from "./users.controller";
+import { DatabaseModule } from "src/mongoose-setup/database.module";
+import { JwtModule } from "@nestjs/jwt";
+import { jwtConstants } from "src/constants";
 import { RefreshTokensModule } from "../refresh-tokens/refresh-tokens.module";
+import { usersProviders } from "../../providers_mongoose/users.providers";
 
 @Module({
   imports: [

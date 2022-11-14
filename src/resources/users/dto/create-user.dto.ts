@@ -1,6 +1,6 @@
-import { Exclude } from 'class-transformer';
-import { IsEmail, IsNotEmpty } from 'class-validator';
-import { Role } from 'src/enums/role.enum';
+import { IsNotEmpty } from "class-validator";
+import { Role } from "src/enums/role.enum";
+
 export class CreateUserDto { //pay attention to equal interface User
   @IsNotEmpty()
   readonly first_name: string;

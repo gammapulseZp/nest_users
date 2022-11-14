@@ -1,17 +1,18 @@
-import { BadRequestException, Inject, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
-import { JwtService } from '@nestjs/jwt';
-import { UsersService } from 'src/users/users.service';
-import * as argon2 from 'argon2';
-import { jwtConstants } from '../constants';
+import { BadRequestException, Inject, Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import * as argon2 from "argon2";
 import { generateAccessToken, generateRefreshToken, tokenRevocation } from "src/utils/tokens";
 import { RefreshTokensService } from "../refresh-tokens/refresh-tokens.service";
-import { Model, SchemaTypes, ObjectId } from "mongoose";
-import { RefreshToken } from "../interfaces_mongoose";
+import { Model, ObjectId } from "mongoose";
+
 import { UpdateRefreshTokenDto } from "../refresh-tokens/dto/update-refresh-token.dto";
-import { catchError } from "../utils/all-exseptions-custom-filter";
-import { Role } from "../enums/role.enum";
-import { CreateUserDto } from "../users/dto/create-user.dto";
+
 import { UpdateUserDto } from "../users/dto/update-user.dto";
+import { RefreshToken } from "../../interfaces_mongoose";
+import { jwtConstants } from "../../constants";
+import { catchError } from "../../utils/all-exseptions-custom-filter";
+import { UsersService } from "../users/users.service";
+import { RefreshTokenResponse } from "../../ts-types";
 
 type User = Omit<RefreshToken & {_id: ObjectId}, never>;
 
@@ -61,9 +62,9 @@ export class AuthService {
     };
   }
 
-  async revokeToken(req, updateRefreshTokenDto: UpdateRefreshTokenDto) {
+  async revokeToken(req, updateRefreshTokenDto: UpdateRefreshTokenDto):Promise<string> {
     try {
-      //check body first since admin have own refresh token in cookies
+      //check body first since admin have own refresh token in cookies // also request.signedCookies if a secret was provided on top-level (app.use(cookieParser()))
       const reqToken = req?.body?.token || req?.cookies?.refresh_token; //admin sends token in body, user owner - from cookies
       if (!reqToken) throw new BadRequestException('Token is required');
       // 1. find token document in db
@@ -77,12 +78,12 @@ export class AuthService {
       }
   }
 
-  async logout(response: any) {
+  async logout(response: any): Promise<string> {
     response.cookie('refresh_token', null)
     return 'refresh_token !!cookie!! invalidated'
   }
 
-  async refreshToken(req, response, updateRefreshTokenDto: UpdateRefreshTokenDto,) {
+  async refreshToken(req, response, updateRefreshTokenDto: UpdateRefreshTokenDto): Promise<RefreshTokenResponse> {
     try {
       const reqToken = req?.cookies?.refresh_token;
 
@@ -93,17 +94,13 @@ export class AuthService {
       // 2, 3 happen in tokenRevocation
       await tokenRevocation(reqToken, this.refreshTokenService, updateRefreshTokenDto, req, refresh_token_document)
 
-      //console.log('refresh_token_document', refresh_token_document);
-
       // 4. populate user details from refresh_token_document for generating new and returning user's data
       const user_document = await refresh_token_document.populate({path: "user" })
       const user = user_document?.user
-      console.log('user', user);
 
       // 5. generate new refresh token
       const payload = { username: (user as unknown as UpdateUserDto)?.username, sub: (user as unknown as User)?._id};
-     const new_token = await generateRefreshToken(payload, this.jwtService)
-     console.log('newToken', new_token);
+      const new_token = await generateRefreshToken(payload, this.jwtService)
 
       // 6. generate new access token
       const access_token = await generateAccessToken(payload, this.jwtService)
@@ -116,7 +113,7 @@ export class AuthService {
 
       return {
         access_token,
-        user,
+        user: (user as UpdateUserDto),
       }
 
     } catch (err) {

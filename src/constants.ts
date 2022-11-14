@@ -8,7 +8,7 @@ We have done so here to make it clear what the code is doing,
 export const jwtConstants = {
   secret: 'secretKey',
   refreshSecret: 'refreshSecret',
-  expiresIn: '60m',
+  expiresIn: '30m',
   refereshTokenExpiresIn: '7d' //Date.now() + 7*24*60*60*1000
 };
 

@@ -1,7 +1,7 @@
 import { jwtConstants } from "src/constants";
 import { NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { Role } from "../enums/role.enum";
-import { UpdateRefreshTokenDto } from "../refresh-tokens/dto/update-refresh-token.dto";
+import { UpdateRefreshTokenDto } from "../resources/refresh-tokens/dto/update-refresh-token.dto";
 
 export const generateAccessToken = async(payload, signFn) => {
   return signFn.sign(payload, {

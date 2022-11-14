@@ -1,13 +1,18 @@
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
-import { UsersModule } from 'src/users/users.module';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
-import { jwtConstants } from '../constants';
 import { RefreshTokenStrategy } from './refreshToken.strategy';
 import { RefreshTokensModule } from "../refresh-tokens/refresh-tokens.module";
+import { UsersModule } from "../users/users.module";
+import { jwtConstants } from "src/constants";
+import { AppService } from "../../app.service";
+import { APP_GUARD } from "@nestjs/core";
+import { JwtAuthGuard } from "../../guards/jwt-auth.guard";
+import { RolesGuard } from "../../guards/roles.guard";
+import { AuthController } from "./auth.controller";
 
 /*
   for more on the Nest JwtModule: https://github.com/nestjs/jwt/blob/master/README.md
@@ -29,7 +34,17 @@ import { RefreshTokensModule } from "../refresh-tokens/refresh-tokens.module";
     }),
     RefreshTokensModule,
     ],
-  providers: [AuthService, LocalStrategy, JwtStrategy, RefreshTokenStrategy],
+  controllers: [AuthController],
+  providers: [AuthService, LocalStrategy, JwtStrategy, RefreshTokenStrategy, AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard, //With this in place, Nest will automatically bind JwtAuthGuard to all endpoints.
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard, // roles decorator
+    },
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}

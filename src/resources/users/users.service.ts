@@ -1,7 +1,6 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { Model } from "mongoose";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { RefreshToken, User } from "../interfaces_mongoose";
 import { catchError } from "src/utils/all-exseptions-custom-filter";
 import { isUniqueEmail, isUniqueUsername } from "src/utils/unique";
 import { SignUpDto } from "./dto/sign-up";
@@ -10,6 +9,7 @@ import { JwtService } from "@nestjs/jwt";
 import { generateRefreshToken } from "src/utils/tokens";
 import { CreateRefreshTokenDto } from "../refresh-tokens/dto/create-refresh-token.dto";
 import { Role } from "src/enums/role.enum";
+import { RefreshToken, User } from "../../interfaces_mongoose";
 
 
 @Injectable()
@@ -44,19 +44,13 @@ export class UsersService {
   const payload = { username: createdUser?.username, sub: createdUser?._id };
   const refresh_token = await generateRefreshToken(payload, this.jwtService)
 
-  console.log('refresh_token', refresh_token);
-  // await this.refreshTokenModel.create({
-  //   ...refreshTokenDto,
-  //   token: refresh_token,
-  // })
-
   //updating straight after creating since generating refresh token needs the _id
   //await this.update(createdUser._id, {[refreshToken: refresh_token]}, true /* isCreated to skip check the email */);
   return createdUser//.save();
 
   } catch (err) {
     console.log(err)
-    catchError(err, 'auth');
+    catchError(err, 'users');
   }
 }
 

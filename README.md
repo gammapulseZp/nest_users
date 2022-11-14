@@ -35,11 +35,8 @@ $ npm install
 ## Running the app
 
 ```bash
-# development
-$ npm run start
-
 # watch mode
-$ npm run start:dev
+$ npm run start
 
 # production mode
 $ npm run start:prod
@@ -72,29 +69,4 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 Nest is [MIT licensed](LICENSE).
 
--data validation
-field not stated in shema throws the error to track
-first_name via class-validator
-email, password - via class-validator
-objectId - via class validator in custom validation pipe 
-data transformation
-??password is encrypted in custom transformation pipe
-
--exception handling:
-utils - all-exceptions-filter //??
-utils - NonSchemaField //for mongoose schema 
-utils - CastError  // for castError - types error
-
-user flow:
-CreateUserDto is a "single source of truth" in user flow dto
-interface User is a "single source of truth" for other interfaces/types that correspond to dto in user flow
-
-user signs-up with SignUpDto containing 2 fields - username and password picked from CreateUserDto
-password is stored hashed. 
-username is validated for being uniq
-
-user later fills other fields with UpdateUserDto
-email is validated for being uniq
-
-user later changes other fields with UpdateUserDto that extends PartialType PATCH
 

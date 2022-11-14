@@ -1,9 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { UpdateRefreshTokenDto } from "./dto/update-refresh-token.dto";
 import { Model } from "mongoose";
-import { RefreshToken } from "../interfaces_mongoose";
-import { catchError } from "../utils/all-exseptions-custom-filter";
-import { User } from "../schemas/user.schema";
+import { RefreshToken } from "../../interfaces_mongoose";
+import { catchError } from "../../utils/all-exseptions-custom-filter";
 
 @Injectable()
 export class RefreshTokensService {
