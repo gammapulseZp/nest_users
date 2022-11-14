@@ -1,26 +1,4 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
 
@@ -55,18 +33,15 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
-
+## CREATE A SERVER WITH BASIC AUTHENTICATION AND AUTHORIZATION API,SO THE USER CAN REGISTER AND LOG IN. HANDLE ERRORS AND EXCEPTIONS FOR EVERY REQUEST. 
+TECHNOLOGIES: NEST.JS, MONGODB (mongoose), JWT. 
+● /auth/sign-in - public route that accepts HTTP POST requests containing a username and password in the body. If the username and password are correct then a JWT authentication token and the user details are returned in the response body, and a refresh token cookie (HTTP Only) is returned in the response headers. 
+● /auth/sign-up - public route that accepts HTTP POST requests containing a username and password in the body. The password should be stored hashed. 
+● /auth/logout - secure route that accepts HTTP POST requests and invalidates the refresh token. 
+● /auth/refresh-token - public route that accepts HTTP POST requests with a refresh token cookie. If the cookie exists and the refresh token is valid then a new JWT authentication token and the user details are returned in the response body, a new refresh token cookie (HTTP Only) is returned in the response headers and the old refresh token is revoked. 
+● /auth/revoke-token - secure route that accepts HTTP POST requests containing a refresh token either in the body or in a cookie, if both are present the token in the body is used. If the refresh token is valid and active then it is revoked and can no longer be used to refresh JWT tokens.
+● /users - secure route that accepts HTTP GET requests and returns a list of all the users in the application if the HTTP Authorization header contains a valid JWT token. If there is no auth token or the token is invalid then a 401 Unauthorized response is returned. 
+● /users/{id} - secure route that accepts HTTP GET requests and returns the details of the user with the specified id. 
+● /users/{id}/refresh-tokens - secure route that accepts HTTP GET requests and returns a list of all refresh tokens (active and revoked) of the user with the specified id. 
+● * -- /api-docs - swagger documentation for the api 
 
