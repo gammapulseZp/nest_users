@@ -7,7 +7,6 @@ import { JwtStrategy } from './jwt.strategy';
 import { RefreshTokenStrategy } from './refreshToken.strategy';
 import { RefreshTokensModule } from "../refresh-tokens/refresh-tokens.module";
 import { UsersModule } from "../users/users.module";
-import { jwtConstants } from "src/constants";
 import { AppService } from "../../app.service";
 import { APP_GUARD } from "@nestjs/core";
 import { JwtAuthGuard } from "../../guards/jwt-auth.guard";
@@ -29,8 +28,8 @@ import { AuthController } from "./auth.controller";
        we ensure that the verify phase performed by Passport,
        and the sign phase performed in our AuthService, use a common secret.
        */
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: jwtConstants.expiresIn },
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
     }),
     RefreshTokensModule,
     ],

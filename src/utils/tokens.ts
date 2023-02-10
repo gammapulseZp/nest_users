@@ -1,4 +1,3 @@
-import { jwtConstants } from "src/constants";
 import { NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { Role } from "../enums/role.enum";
 import { UpdateRefreshTokenDto } from "../resources/refresh-tokens/dto/update-refresh-token.dto";
@@ -13,15 +12,15 @@ export const generateAccessToken = async(payload, signFn) => {
      */
     //secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
     //after deployment or fix process.env // same as secretOrKey in class JwtStrategy
-    secret: jwtConstants.secret,
-    expiresIn: jwtConstants.expiresIn //not cookie, not token document, encryption purposes only
+    secret: process.env.JWT_SECRET,
+    expiresIn: process.env.JWT_EXPIRES_IN //not cookie, not token document, encryption purposes only
   })
 }
 export const generateRefreshToken = async(payload, signFn) => {
   // sign() supplied by @nestjs/jwt library ... check the access_token/generateAccessToken
   return signFn.sign(payload, {
-    secret: jwtConstants.refreshSecret,
-    expiresIn: jwtConstants.refereshTokenExpiresIn,
+    secret: process.env.REFRESH_SECRET,
+    expiresIn: process.env.REFRESH_EXPIRES_IN,
   })
 }
 

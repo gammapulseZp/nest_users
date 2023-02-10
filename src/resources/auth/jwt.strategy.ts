@@ -1,10 +1,7 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
-import { jwtConstants } from "../../constants";
-//Remove if no need
-// import { config } from 'dotenv';
-// config();
+
 /*
   jwtFromRequest:
     supplies the method by which the JWT will be extracted from the Request.
@@ -29,7 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: jwtConstants.secret, //need to be configured and set as environment variables
+      secretOrKey: process.env.JWT_SECRET, //need to be configured and set as environment variables
     });
   }
   //Based on the way JWT signing works, we're guaranteed that we're receiving a valid token that we have previously signed and issued to a valid user.

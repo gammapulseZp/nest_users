@@ -3,6 +3,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+const { dirname } = require('path');
+const appDir = dirname(require.main.filename);
+// testing process.env - comment out if no need
+// import { config } from 'dotenv';
+// const test = config();
+// console.log(test)
 async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
@@ -31,8 +37,11 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
+
   await app.listen(3000);
+    console.log('appDir ', appDir)
    console.log('server running on env:', process.env.NODE_ENV)
+   
 
 }
 bootstrap();

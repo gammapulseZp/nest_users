@@ -9,10 +9,14 @@ import { UpdateRefreshTokenDto } from "../refresh-tokens/dto/update-refresh-toke
 
 import { UpdateUserDto } from "../users/dto/update-user.dto";
 import { RefreshToken } from "../../interfaces_mongoose";
-import { jwtConstants } from "../../constants";
 import { catchError } from "../../utils/all-exseptions-custom-filter";
 import { UsersService } from "../users/users.service";
 import { RefreshTokenResponse } from "../../ts-types";
+
+// Remove if no need
+// import { config } from 'dotenv';
+// config();
+require('dotenv').config()
 
 type User = Omit<RefreshToken & {_id: ObjectId}, never>;
 
@@ -46,7 +50,7 @@ export class AuthService {
     const refresh_token = await generateRefreshToken(payload, this.jwtService)
      await response.cookie('refresh_token', refresh_token, { //also sets automatically the 'Set-Cookie' header
       httpOnly: true,
-      expiresIn: jwtConstants.refereshTokenExpiresIn, //cookie expires in, so the token too
+      expiresIn: process.env.REFRESH_EXPIRES_IN, //cookie expires in, so the token too
     })
     await this.refreshTokenModel.create({
         token: refresh_token,
@@ -55,7 +59,7 @@ export class AuthService {
         expires: Date.now() + 7*24*60*60*1000,
       })
     const access_token = await generateAccessToken(payload, this.jwtService)
-
+    console.log('process.env.DATABASE_LOCAL', process.env.DATABASE_LOCAL)
     return {
       access_token,
       user: user._doc
@@ -108,9 +112,9 @@ export class AuthService {
       // 7. set refresh token cookie
       await response.cookie('refresh_token', new_token, {
         httpOnly: true,
-        expiresIn: jwtConstants.refereshTokenExpiresIn,
+        expiresIn: process.env.REFRESH_EXPIRES_IN,
       })
-
+      
       return {
         access_token,
         user: (user as UpdateUserDto),

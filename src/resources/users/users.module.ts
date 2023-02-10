@@ -3,7 +3,6 @@ import { UsersService } from "./users.service";
 import { UsersController } from "./users.controller";
 import { DatabaseModule } from "src/mongoose-setup/database.module";
 import { JwtModule } from "@nestjs/jwt";
-import { jwtConstants } from "src/constants";
 import { RefreshTokensModule } from "../refresh-tokens/refresh-tokens.module";
 import { usersProviders } from "../../providers_mongoose/users.providers";
 
@@ -16,8 +15,8 @@ import { usersProviders } from "../../providers_mongoose/users.providers";
        we ensure that the verify phase performed by Passport,
        and the sign phase performed in our AuthService, use a common secret.
        */
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: jwtConstants.expiresIn },
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
     }),
   ],
   controllers: [UsersController],
